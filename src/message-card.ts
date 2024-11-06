@@ -1,58 +1,102 @@
-export function createMessageCard(
-  notificationSummary: string,
-  notificationColor: string,
-  commit: any,
-  author: any,
-  runNum: string,
-  runId: string,
-  repoName: string,
-  sha: string,
-  repoUrl: string,
-  timestamp: string
-): any {
+import {CardConfig} from './types'
+
+export function createMessageCard(cardConfig: CardConfig): any {
+  const workflow = cardConfig.workflow
+  const author = workflow.author
+  const repo = workflow.repo
+  const commit = workflow.commit
+
   let avatar_url =
-    'https://www.gravatar.com/avatar/05b6d8cc7c662bf81e01b39254f88a48?d=identicon'
-  if (author) {
-    if (author.avatar_url) {
-      avatar_url = author.avatar_url
+    'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
+  if (author.avatarUrl) {
+    if (author.avatarUrl) {
+      avatar_url = author.avatarUrl
     }
   }
+
   let author_url = ''
-  if (author) {
-    if (author.login && author.html_url) {
-      author_url = `[(@${author.login})](${author.html_url})`
+  if (cardConfig.workflow.author) {
+    if (author.login && author.htmlUrl) {
+      author_url = `[(@${author.login})](${author.htmlUrl})`
     }
   }
+
   const messageCard = {
-    '@type': 'MessageCard',
-    '@context': 'https://schema.org/extensions',
-    summary: notificationSummary,
-    themeColor: notificationColor,
-    title: notificationSummary,
-    sections: [
+    $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+    type: 'AdaptiveCard',
+    version: '1.5',
+    body: [
       {
-        activityTitle: `**CI #${runNum} (commit ${sha.substr(
-          0,
-          7
-        )})** on [${repoName}](${repoUrl})`,
-        activityImage: avatar_url,
-        activitySubtitle: `by ${commit.data.commit.author.name} ${author_url} on ${timestamp}`
+        type: 'ColumnSet',
+        columns: [
+          {
+            type: 'Column',
+            width: '1px',
+            style: cardConfig.notificationStyle,
+            bleed: true
+          },
+          {
+            type: 'Column',
+            width: 'auto',
+            items: [
+              {
+                type: 'TextBlock',
+                text: cardConfig.notificationSummary,
+                weight: 'Bolder',
+                size: 'Medium'
+              },
+              {
+                type: 'ColumnSet',
+                columns: [
+                  {
+                    type: 'Column',
+                    width: 'auto',
+                    items: [
+                      {
+                        type: 'Image',
+                        url: avatar_url,
+                        size: 'Medium',
+                        style: 'Person'
+                      }
+                    ]
+                  },
+                  {
+                    type: 'Column',
+                    width: 'stretch',
+                    items: [
+                      {
+                        type: 'TextBlock',
+                        text: `**${workflow.name} #${workflow.runNumber} (commit ${commit.sha.substring(0, 7)})** on [${repo.name}](${repo.url})`,
+                        wrap: true
+                      },
+                      {
+                        type: 'TextBlock',
+                        text: `by [${author.name}](${author_url}) on ${cardConfig.timestamp}`,
+                        isSubtle: true,
+                        wrap: true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ],
-    potentialAction: [
+    actions: [
       {
-        '@context': 'http://schema.org',
-        target: [`${repoUrl}/actions/runs/${runId}`],
-        '@type': 'ViewAction',
-        name: 'View Workflow Run'
+        type: 'Action.OpenUrl',
+        title: 'View Workflow Run',
+        url: `${repo.url}/actions/runs/${workflow.runId}`
       },
       {
-        '@context': 'http://schema.org',
-        target: [commit.data.html_url],
-        '@type': 'ViewAction',
-        name: 'View Commit Changes'
+        type: 'Action.OpenUrl',
+        title: 'View Commit Changes',
+        url: `${commit.data.html_url}`
       }
     ]
   }
+
   return messageCard
 }
