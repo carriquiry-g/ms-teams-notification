@@ -26,6 +26,7 @@ jobs:
         notification-summary: Deployment Started
         notification-style: accent
         timezone: America/Denver
+        verbose-logging: true
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -33,6 +34,7 @@ jobs:
         notification-summary: Warning! Something Not Quite Right
         notification-style: warning
         timezone: America/Denver
+        verbose-logging: true
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -40,6 +42,7 @@ jobs:
         notification-summary: OMG!! Something Exploded
         notification-style: attention
         timezone: America/Denver
+        verbose-logging: true
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -47,6 +50,7 @@ jobs:
         notification-summary: Whew! Everything is right with the world again!
         notification-style: good
         timezone: America/Denver
+        verbose-logging: true
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -54,3 +58,4 @@ jobs:
         notification-summary: "Emojify! &#x1F6A2​​ &#x2705;"
         notification-style: good
         timezone: America/Denver
+        verbose-logging: true
