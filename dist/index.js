@@ -35625,6 +35625,12 @@ const rest_1 = __nccwpck_require__(9380);
 const axios_1 = __importDefault(__nccwpck_require__(7269));
 const moment_timezone_1 = __importDefault(__nccwpck_require__(9856));
 const message_card_1 = __nccwpck_require__(2507);
+function log(obj) {
+    console.dir(obj, {
+        depth: Infinity,
+        colors: true
+    });
+}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         var _a, _b, _c, _d, _e;
@@ -35678,7 +35684,7 @@ function run() {
             };
             const messageCard = yield (0, message_card_1.createMessageCard)(cardConfig);
             if (verboseLogging) {
-                console.log(messageCard);
+                log(messageCard);
             }
             const messagePayload = {
                 type: 'message',
@@ -35693,7 +35699,7 @@ function run() {
                 .post(msTeamsWebhookUri, messagePayload)
                 .then(function (response) {
                 if (verboseLogging) {
-                    console.log(response);
+                    log(response);
                 }
                 core.debug(response.data);
             })
@@ -35702,7 +35708,7 @@ function run() {
             });
         }
         catch (error) {
-            console.log(error);
+            log(error);
             core.setFailed(error.message);
         }
     });
