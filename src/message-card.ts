@@ -22,78 +22,86 @@ export function createMessageCard(cardConfig: CardConfig): any {
   }
 
   const messageCard = {
-    $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
-    type: 'AdaptiveCard',
-    version: '1.5',
-    body: [
+    type: 'message',
+    attachments: [
       {
-        type: 'ColumnSet',
-        columns: [
-          {
-            type: 'Column',
-            width: '1px',
-            style: cardConfig.notificationStyle,
-            bleed: true
-          },
-          {
-            type: 'Column',
-            width: 'auto',
-            items: [
-              {
-                type: 'TextBlock',
-                text: cardConfig.notificationSummary,
-                weight: 'Bolder',
-                size: 'Medium'
-              },
-              {
-                type: 'ColumnSet',
-                columns: [
-                  {
-                    type: 'Column',
-                    width: 'auto',
-                    items: [
-                      {
-                        type: 'Image',
-                        url: avatar_url,
-                        size: 'Medium',
-                        style: 'Person'
-                      }
-                    ]
-                  },
-                  {
-                    type: 'Column',
-                    width: 'stretch',
-                    items: [
-                      {
-                        type: 'TextBlock',
-                        text: `**${workflow.name} #${workflow.runNumber} (commit ${commit.sha.substring(0, 7)})** on [${repo.name}](${repo.url})`,
-                        wrap: true
-                      },
-                      {
-                        type: 'TextBlock',
-                        text: `by [${author.name}](${author_url}) on ${cardConfig.timestamp}`,
-                        isSubtle: true,
-                        wrap: true
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    actions: [
-      {
-        type: 'Action.OpenUrl',
-        title: 'View Workflow Run',
-        url: `${repo.url}/actions/runs/${workflow.runId}`
-      },
-      {
-        type: 'Action.OpenUrl',
-        title: 'View Commit Changes',
-        url: `${commit.data.html_url}`
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        content: {
+          $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+          type: 'AdaptiveCard',
+          version: '1.5',
+          body: [
+            {
+              type: 'ColumnSet',
+              columns: [
+                {
+                  type: 'Column',
+                  width: '1px',
+                  style: cardConfig.notificationStyle,
+                  bleed: true
+                },
+                {
+                  type: 'Column',
+                  width: 'auto',
+                  items: [
+                    {
+                      type: 'TextBlock',
+                      text: cardConfig.notificationSummary,
+                      weight: 'Bolder',
+                      size: 'Medium'
+                    },
+                    {
+                      type: 'ColumnSet',
+                      columns: [
+                        {
+                          type: 'Column',
+                          width: 'auto',
+                          items: [
+                            {
+                              type: 'Image',
+                              url: avatar_url,
+                              size: 'Medium',
+                              style: 'Person'
+                            }
+                          ]
+                        },
+                        {
+                          type: 'Column',
+                          width: 'stretch',
+                          items: [
+                            {
+                              type: 'TextBlock',
+                              text: `**${workflow.name} #${workflow.runNumber} (commit ${commit.sha.substring(0, 7)})** on [${repo.name}](${repo.url})`,
+                              wrap: true
+                            },
+                            {
+                              type: 'TextBlock',
+                              text: `by [${author.name}](${author_url}) on ${cardConfig.timestamp}`,
+                              isSubtle: true,
+                              wrap: true
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          actions: [
+            {
+              type: 'Action.OpenUrl',
+              title: 'View Workflow Run',
+              url: `${repo.url}/actions/runs/${workflow.runId}`
+            },
+            {
+              type: 'Action.OpenUrl',
+              title: 'View Commit Changes',
+              url: `${commit.data.html_url}`
+            }
+          ]
+        }
       }
     ]
   }
