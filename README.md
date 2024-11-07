@@ -50,7 +50,7 @@ As you can see below, the `notification-summary` and `notification-style` are be
 </p>
 
 ### Emojis
-Emoji support isn't great for incoming webhooks on Microsoft Teams yet. You can hack your way through it using HEX codes. For example, in `notification-summary` I used `Emojify! &#x1F6A2​​ &#x2705;` for the following screenshot. HEX codes for emojis [here](https://apps.timwhitlock.info/emoji/tables/unicode).
+Emojis are supported in Microsoft Teams Adaptive Cards. However, if any emoji isn't rendered correctly, you can hack your way through it using HEX codes. For example, in `notification-summary` I used `Emojify! 🕹️ &#x2705;` for the following screenshot adn both were rendered correctly. HEX codes for emojis [here](https://apps.timwhitlock.info/emoji/tables/unicode).
 
 <p align="center">
 <img src="notification-emoji-screenshot.png">
