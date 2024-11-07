@@ -27,6 +27,7 @@ jobs:
         notification-style: accent
         timezone: America/Denver
         verbose-logging: true
+    - run: sleep 1
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -35,6 +36,7 @@ jobs:
         notification-style: warning
         timezone: America/Denver
         verbose-logging: true
+    - run: sleep 1
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -43,6 +45,7 @@ jobs:
         notification-style: attention
         timezone: America/Denver
         verbose-logging: true
+    - run: sleep 1
     - uses: ./
       with:
         github-token: ${{ github.token }}
@@ -51,6 +54,7 @@ jobs:
         notification-style: good
         timezone: America/Denver
         verbose-logging: true
+    - run: sleep 1
     - uses: ./
       with:
         github-token: ${{ github.token }}
