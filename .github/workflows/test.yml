@@ -55,7 +55,7 @@ jobs:
       with:
         github-token: ${{ github.token }}
         ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
-        notification-summary: "Emojify! &#x1F6A2; &#x2705;"
+        notification-summary: "Emojify! 🕹️ &#x2705;"
         notification-style: good
         timezone: America/Denver
         verbose-logging: true
