@@ -42,8 +42,7 @@ async function run(): Promise<void> {
     const commit = await octokit.repos.getCommit(params)
     const author = commit.data.author
 
-    console.log('author')
-    log(author)
+    core.debug(JSON.stringify(author))
 
     const cardConfig: CardConfig = {
       notificationSummary,

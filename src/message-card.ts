@@ -6,8 +6,6 @@ export function createMessageCard(cardConfig: CardConfig): any {
   const repo = workflow.repo
   const commit = workflow.commit
 
-  console.dir(workflow)
-
   let avatar_url =
     'https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg'
   if (author.avatarUrl) {
