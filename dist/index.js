@@ -35681,7 +35681,7 @@ function run() {
                 console.log(messageCard);
             }
             axios_1.default
-                .post(msTeamsWebhookUri, messageCard)
+                .post(msTeamsWebhookUri, { attachments: [messageCard] })
                 .then(function (response) {
                 if (verboseLogging) {
                     console.log(response);
