@@ -5,11 +5,13 @@ import moment from 'moment-timezone'
 import {createMessageCard} from './message-card'
 import {CardConfig, NotificationStyle} from './types'
 
-function log(obj: any) {
+function log(message: string, obj: any) {
+  console.log('** ' + message + ' **')
   console.dir(obj, {
     depth: Infinity,
     colors: true
   })
+  console.log('')
 }
 
 async function run(): Promise<void> {
@@ -71,8 +73,7 @@ async function run(): Promise<void> {
     const messageCard = await createMessageCard(cardConfig)
 
     if (verboseLogging) {
-      console.warn('** Logging message card generated **')
-      log(messageCard)
+      log('Logging message card generated', messageCard)
     }
 
     const messagePayload = {
@@ -89,8 +90,7 @@ async function run(): Promise<void> {
       .post(msTeamsWebhookUri, messagePayload)
       .then(function (response) {
         if (verboseLogging) {
-          console.warn('** Webhook response **')
-          log({
+          log('Webhook response', {
             status: response.status,
             statusText: response.statusText,
             headers: response.headers,
@@ -107,7 +107,7 @@ async function run(): Promise<void> {
       })
   } catch (error: any) {
     console.error('** Action error **')
-    log(error)
+    log('Action error', error)
     core.setFailed(error.message)
   }
 }
