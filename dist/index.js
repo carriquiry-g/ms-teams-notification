@@ -35684,6 +35684,7 @@ function run() {
             };
             const messageCard = yield (0, message_card_1.createMessageCard)(cardConfig);
             if (verboseLogging) {
+                console.warn('** Logging message card generated **');
                 log(messageCard);
             }
             const messagePayload = {
@@ -35699,15 +35700,25 @@ function run() {
                 .post(msTeamsWebhookUri, messagePayload)
                 .then(function (response) {
                 if (verboseLogging) {
-                    log(response);
+                    console.warn('** Webhook response **');
+                    log({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        method: response.request.method,
+                        url: response.request.url,
+                        data: response.data
+                    });
                 }
                 core.debug(response.data);
             })
                 .catch(function (error) {
+                console.error('** Webhook request error **');
                 core.debug(error);
             });
         }
         catch (error) {
+            console.error('** Action error **');
             log(error);
             core.setFailed(error.message);
         }
@@ -35739,7 +35750,7 @@ function createMessageCard(cardConfig) {
     let author_url = '';
     if (cardConfig.workflow.author) {
         if (author.login && author.htmlUrl) {
-            author_url = `[(@${author.login})](${author.htmlUrl})`;
+            author_url = `[@${author.login}](${author.htmlUrl})`;
         }
     }
     const messageCard = {
@@ -35792,7 +35803,7 @@ function createMessageCard(cardConfig) {
                                             },
                                             {
                                                 type: 'TextBlock',
-                                                text: `by [${author.name}](${author_url}) on ${cardConfig.timestamp}`,
+                                                text: `by ${author.name ? author.name + ' (' + author_url + ') ' : author_url} on ${cardConfig.timestamp}`,
                                                 isSubtle: true,
                                                 wrap: true
                                             }
