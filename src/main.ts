@@ -42,6 +42,9 @@ async function run(): Promise<void> {
     const commit = await octokit.repos.getCommit(params)
     const author = commit.data.author
 
+    console.log('author')
+    log(author)
+
     const cardConfig: CardConfig = {
       notificationSummary,
       notificationStyle,
@@ -71,6 +74,7 @@ async function run(): Promise<void> {
     const messageCard = await createMessageCard(cardConfig)
 
     if (verboseLogging) {
+      console.warn('** Logging message card generated **')
       log(messageCard)
     }
 
@@ -88,14 +92,24 @@ async function run(): Promise<void> {
       .post(msTeamsWebhookUri, messagePayload)
       .then(function (response) {
         if (verboseLogging) {
-          log(response)
+          console.warn('** Webhook response **')
+          log({
+            status: response.status,
+            statusText: response.statusText,
+            headers: response.headers,
+            method: response.request.method,
+            url: response.request.url,
+            data: response.data
+          })
         }
         core.debug(response.data)
       })
       .catch(function (error) {
+        console.error('** Webhook request error **')
         core.debug(error)
       })
   } catch (error: any) {
+    console.error('** Action error **')
     log(error)
     core.setFailed(error.message)
   }
