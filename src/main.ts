@@ -68,7 +68,7 @@ async function run(): Promise<void> {
     }
 
     axios
-      .post(msTeamsWebhookUri, messageCard)
+      .post(msTeamsWebhookUri, {attachments: [messageCard]})
       .then(function (response) {
         if (verboseLogging) {
           console.log(response)
