@@ -71,7 +71,7 @@ export function createMessageCard(cardConfig: CardConfig): any {
                       },
                       {
                         type: 'TextBlock',
-                        text: `by [${author.name}] (${author_url}) on ${cardConfig.timestamp}`,
+                        text: `by ${author_url} on ${cardConfig.timestamp}`,
                         isSubtle: true,
                         wrap: true
                       }
