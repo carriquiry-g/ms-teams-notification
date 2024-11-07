@@ -67,8 +67,18 @@ async function run(): Promise<void> {
       console.log(messageCard)
     }
 
+    const messagePayload = {
+      type: 'message',
+      attachments: [
+        {
+          contentType: 'application/vnd.microsoft.card.adaptive',
+          content: messageCard
+        }
+      ]
+    }
+
     axios
-      .post(msTeamsWebhookUri, messageCard)
+      .post(msTeamsWebhookUri, messagePayload)
       .then(function (response) {
         if (verboseLogging) {
           console.log(response)
