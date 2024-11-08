@@ -1,5 +1,5 @@
-name: 'Microsoft Teams Notification v2'
-description: 'Send a custom notification message to a Microsoft Teams channel with GitHub repo details using the new Microsoft Teams webhooks with workflows and Adaptive Cards'
+name: 'Microsoft Teams Channel Notification'
+description: 'Send a custom notification message to a Microsoft Teams channel using the new webhooks with workflows and Adaptive Cards'
 author: 'carriquiry-g'
 branding:
   icon: at-sign
