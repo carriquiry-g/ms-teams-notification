@@ -73,7 +73,7 @@ async function run(): Promise<void> {
     const messageCard = await createMessageCard(cardConfig)
 
     if (verboseLogging) {
-      log('Logging message card generated', messageCard)
+      log('Message card generated:', messageCard)
     }
 
     const messagePayload = {
@@ -102,12 +102,13 @@ async function run(): Promise<void> {
         core.debug(response.data)
       })
       .catch(function (error) {
-        console.error('** Webhook request error **')
+        log('Webhook request error', error)
         core.debug(error)
+        core.setFailed(error.message)
       })
   } catch (error: any) {
-    console.error('** Action error **')
     log('Action error', error)
+    core.debug(error)
     core.setFailed(error.message)
   }
 }
