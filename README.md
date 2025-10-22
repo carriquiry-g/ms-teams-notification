@@ -39,6 +39,7 @@ jobs:
    - `ms-teams-webhook-uri` - (required), setup a new secret to store your Microsoft Teams Webhook URI (ex. `MS_TEAMS_WEBHOOK_URI`). Learn more about setting up [GitHub Secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) or [Microsoft Teams Incoming Webhook](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498).
    - `notification-summary` (required), Your custom notification message (ex. Deployment Started or Build Successful)
    - `notification-style` (optional), color to help distinguish type of notification. Can be `default`, `emphasis`, `accent`, `good`, `warning`, or `attention`, per [`ColumnSet` style property options](https://adaptivecards.io/explorer/ColumnSet.html).
+   - `custom-adaptive-card` (optional), Full custom Adaptive Card JSON. If provided, this overrides the default card template. The JSON must be a valid Adaptive Card with `type: "AdaptiveCard"`. Learn more about [Adaptive Cards](https://adaptivecards.io/).
    - `timezone` - (optional, defaults to `UTC`), a [valid database timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), (ex. Australia/Sydney or America/Denver, etc.)
    - `verbose-logging` - (optional, defaults to `false`), Emits additional logging showing the sent message card and response from the webhook.
 
@@ -48,6 +49,47 @@ As you can see below, the `notification-summary` and `notification-style` are be
 <p align="center">
 <img src="notification-color-screenshots.png">
 </p>
+
+### Using Custom Adaptive Cards
+You can provide a fully custom Adaptive Card JSON using the `custom-adaptive-card` input. This allows you to create highly customized notifications:
+
+```yaml
+- name: Notify with custom card
+  uses: carriquiry-g/ms-teams-notification@v2
+  with:
+    github-token: ${{ github.token }}
+    ms-teams-webhook-uri: ${{ secrets.MS_TEAMS_WEBHOOK_URI }}
+    custom-adaptive-card: |
+      {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "✅ Deployment completed for **${{ env.ENVIRONMENT }}** environment!"
+          },
+          {
+            "type": "TextBlock",
+            "text": "📦 Image: **${{ env.IMAGE_NAME }}:${{ github.sha }}**"
+          },
+          {
+            "type": "TextBlock",
+            "text": "🌐 Deployed App URL: https://${{ needs.deploy.outputs.url }}"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.OpenUrl",
+            "title": "View Deployment",
+            "url": "https://${{ needs.build_and_deploy.outputs.webapp-url }}"
+          }
+        ],
+        "version": "1.2"
+      }
+```
+
+**Note:** When using `custom-adaptive-card`, the `notification-summary` and `notification-style` inputs are ignored.
 
 ### Emojis
 Emoji support isn't great for incoming webhooks on Microsoft Teams yet. You can hack your way through it using HEX codes. For example, in `notification-summary` I used `Emojify! &#x1F6A2​​ &#x2705;` for the following screenshot. HEX codes for emojis [here](https://apps.timwhitlock.info/emoji/tables/unicode).

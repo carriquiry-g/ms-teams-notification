@@ -35641,6 +35641,7 @@ function run() {
             });
             const notificationSummary = core.getInput('notification-summary') || 'GitHub Action Notification';
             const notificationStyle = core.getInput('notification-style') || 'accent';
+            const customAdaptiveCard = core.getInput('custom-adaptive-card') || '';
             const timezone = core.getInput('timezone') || 'UTC';
             const verboseLogging = core.getInput('verbose-logging') == 'true';
             const timestamp = (0, moment_timezone_1.default)()
@@ -35682,8 +35683,9 @@ function run() {
                     }
                 }
             };
-            const messageCard = yield (0, message_card_1.createMessageCard)(cardConfig);
+            const messageCard = yield (0, message_card_1.createMessageCard)(cardConfig, customAdaptiveCard);
             if (verboseLogging) {
+                console.warn('** Logging message card generated **');
                 log(messageCard);
             }
             const messagePayload = {
@@ -35699,15 +35701,25 @@ function run() {
                 .post(msTeamsWebhookUri, messagePayload)
                 .then(function (response) {
                 if (verboseLogging) {
-                    log(response);
+                    console.warn('** Webhook response **');
+                    log({
+                        status: response.status,
+                        statusText: response.statusText,
+                        headers: response.headers,
+                        method: response.request.method,
+                        url: response.request.url,
+                        data: response.data
+                    });
                 }
                 core.debug(response.data);
             })
                 .catch(function (error) {
+                console.error('** Webhook request error **');
                 core.debug(error);
             });
         }
         catch (error) {
+            console.error('** Action error **');
             log(error);
             core.setFailed(error.message);
         }
@@ -35725,7 +35737,24 @@ run();
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createMessageCard = createMessageCard;
-function createMessageCard(cardConfig) {
+function createMessageCard(cardConfig, customAdaptiveCard) {
+    // If a custom Adaptive Card is provided, use it instead of the default template
+    if (customAdaptiveCard === null || customAdaptiveCard === void 0 ? void 0 : customAdaptiveCard.trim()) {
+        try {
+            const customCard = JSON.parse(customAdaptiveCard);
+            // Validate that it's a valid Adaptive Card
+            if (!customCard.type || customCard.type !== 'AdaptiveCard') {
+                throw new Error('Custom card must have type: "AdaptiveCard"');
+            }
+            return customCard;
+        }
+        catch (error) {
+            throw new Error(`Invalid custom Adaptive Card JSON: ${error.message || error}`);
+        }
+    }
+    return buildDefaultCard(cardConfig);
+}
+function buildDefaultCard(cardConfig) {
     const workflow = cardConfig.workflow;
     const author = workflow.author;
     const repo = workflow.repo;
@@ -35739,7 +35768,7 @@ function createMessageCard(cardConfig) {
     let author_url = '';
     if (cardConfig.workflow.author) {
         if (author.login && author.htmlUrl) {
-            author_url = `[(@${author.login})](${author.htmlUrl})`;
+            author_url = `[@${author.login}](${author.htmlUrl})`;
         }
     }
     const messageCard = {
@@ -35792,7 +35821,7 @@ function createMessageCard(cardConfig) {
                                             },
                                             {
                                                 type: 'TextBlock',
-                                                text: `by [${author.name}](${author_url}) on ${cardConfig.timestamp}`,
+                                                text: `by ${author.name ? author.name + ' (' + author_url + ') ' : author_url} on ${cardConfig.timestamp}`,
                                                 isSubtle: true,
                                                 wrap: true
                                             }
