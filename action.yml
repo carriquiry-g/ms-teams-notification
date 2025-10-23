@@ -15,8 +15,11 @@ inputs:
     description: 'Message to be sent to Microsoft Teams channel'
     required: true
   notification-style:
-    description: 'Style of notification (ex. good, danger, etc.)'
+    description: 'Style of notification (ex. good, attention, etc.)'
     required: true
+  custom-adaptive-card:
+    description: 'Custom Adaptive Card JSON. If provided, this will override the default card template'
+    required: false
   timezone:
     description: 'Timezone (ex. America/Denver)'
     required: false
