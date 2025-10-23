@@ -43,11 +43,53 @@ jobs:
    - `timezone` - (optional, defaults to `UTC`), a [valid database timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), (ex. Australia/Sydney or America/Denver, etc.)
    - `verbose-logging` - (optional, defaults to `false`), Emits additional logging showing the sent message card and response from the webhook.
 
+## How to setup the workflow
+After creating the channel webhook in Microsoft Teams, you should see in your Workflows tab or in Power Automate that a job was created for this purpose. You can copy the following example to make sure it works as expected.
+
+### Workflow overview
+This is what the whole workflow looks like.
+
+<p align="center">
+<img src="imgs/workflow-overview.png">
+</p>
+
+### Key configurations
+#### For each
+Make sure when hovering over `Attachments`, it shows `triggerOutputs()?['body']?['attachments']` as shown below.
+
+<p align="center">
+<img src="imgs/for-each-config.png">
+</p>
+
+#### Compose
+Make sure when hovering over `Attachments`, it shows `triggerOutputs()?['attachments']` as shown below.
+
+<p align="center">
+<img src="imgs/compose-config.png">
+</p>
+
+#### Send each adaptive card
+Make sure when hovering over `Attachments`, it shows `triggerOutputs()?['attachments']` as shown below.
+
+<p align="center">
+<img src="imgs/send-each-config.png">
+</p>
+
+#### Post card in a chat or channel
+For this step, configure the `Post as`, `Post in`, `Team`, and `Channel` fields as needed. Some may not appear depending on your selection. The important part is the `Adaptive Card` field. Complete it to use `Attachments Adaptive Card` and make sure that when hovering over it, it shows `item()?['content']` as shown below.
+
+<p align="center">
+<img src="imgs/post-card-config.png">
+</p>
+
+> [!NOTE]
+> This is what worked for me and my team using Microsoft Teams and Power Automate since the `v2.1.0` release. If you find a better/different way to do this, please open an issue or a PR to help improve this action and its documentation.
+
 ## Examples
 As you can see below, the `notification-summary` and `notification-style` are being used to customize the appearance of the message.
 
 <p align="center">
-<img src="notification-color-screenshots.png">
+<img src="imgs/notification-color-screenshots.png">
 </p>
 
 ### Using Custom Adaptive Cards
@@ -95,5 +137,5 @@ You can provide a fully custom Adaptive Card JSON using the `custom-adaptive-car
 Emojis are supported in Microsoft Teams Adaptive Cards. However, if any emoji isn't rendered correctly, you can hack your way through it using HEX codes. For example, in `notification-summary` I used `Emojify! 🕹️ &#x2705;` for the following screenshot adn both were rendered correctly. HEX codes for emojis [here](https://apps.timwhitlock.info/emoji/tables/unicode).
 
 <p align="center">
-<img src="notification-emoji-screenshot.png">
+<img src="imgs/notification-emoji-screenshot.png">
 </p>
