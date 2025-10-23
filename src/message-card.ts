@@ -1,6 +1,27 @@
 import {CardConfig} from './types'
 
-export function createMessageCard(cardConfig: CardConfig): any {
+export function createMessageCard(
+  cardConfig: CardConfig,
+  customAdaptiveCard?: string
+): any {
+  if (customAdaptiveCard?.trim()) {
+    try {
+      const customCard = JSON.parse(customAdaptiveCard)
+      if (!customCard.type || customCard.type !== 'AdaptiveCard') {
+        throw new Error('Custom card must have type: "AdaptiveCard"')
+      }
+      return customCard
+    } catch (error: any) {
+      throw new Error(
+        `Invalid custom Adaptive Card JSON: ${error.message || error}`
+      )
+    }
+  }
+
+  return buildDefaultCard(cardConfig)
+}
+
+function buildDefaultCard(cardConfig: CardConfig): any {
   const workflow = cardConfig.workflow
   const author = workflow.author
   const repo = workflow.repo

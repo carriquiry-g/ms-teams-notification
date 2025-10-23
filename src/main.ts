@@ -23,6 +23,7 @@ async function run(): Promise<void> {
       core.getInput('notification-summary') || 'GitHub Action Notification'
     const notificationStyle =
       (core.getInput('notification-style') as NotificationStyle) || 'accent'
+    const customAdaptiveCard = core.getInput('custom-adaptive-card') || ''
     const timezone = core.getInput('timezone') || 'UTC'
     const verboseLogging = core.getInput('verbose-logging') == 'true'
     const timestamp = moment()
@@ -68,7 +69,7 @@ async function run(): Promise<void> {
       }
     }
 
-    const messageCard = await createMessageCard(cardConfig)
+    const messageCard = await createMessageCard(cardConfig, customAdaptiveCard)
 
     if (verboseLogging) {
       console.warn('** Logging message card generated **')
@@ -104,6 +105,7 @@ async function run(): Promise<void> {
       .catch(function (error) {
         console.error('** Webhook request error **')
         core.debug(error)
+        core.setFailed(error.message)
       })
   } catch (error: any) {
     console.error('** Action error **')

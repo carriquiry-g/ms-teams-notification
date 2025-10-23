@@ -5,7 +5,6 @@ export type NotificationStyle =
   | 'warning'
   | 'attention'
   | 'good'
-  | 'danger'
 
 interface Author {
   name?: string | null
