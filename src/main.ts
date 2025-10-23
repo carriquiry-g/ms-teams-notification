@@ -105,6 +105,7 @@ async function run(): Promise<void> {
       .catch(function (error) {
         console.error('** Webhook request error **')
         core.debug(error)
+        core.setFailed(error.message)
       })
   } catch (error: any) {
     console.error('** Action error **')
