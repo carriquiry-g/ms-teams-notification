@@ -39,7 +39,7 @@ jobs:
    - `ms-teams-webhook-uri` - (required), setup a new secret to store your Microsoft Teams Webhook URI (ex. `MS_TEAMS_WEBHOOK_URI`). Learn more about setting up [GitHub Secrets](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) or [Microsoft Teams Incoming Webhook](https://support.microsoft.com/en-us/office/create-incoming-webhooks-with-workflows-for-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498).
    - `notification-summary` (required), Your custom notification message (ex. Deployment Started or Build Successful)
    - `notification-style` (optional), color to help distinguish type of notification. Can be `default`, `emphasis`, `accent`, `good`, `warning`, or `attention`, per [`ColumnSet` style property options](https://adaptivecards.io/explorer/ColumnSet.html).
-   - `custom-adaptive-card` (optional), Full custom Adaptive Card JSON. If provided, this overrides the default card template. The JSON must be a valid Adaptive Card with `type: "AdaptiveCard"`. Learn more about [Adaptive Cards](https://adaptivecards.io/).
+   - `custom-adaptive-card` (optional), Full custom Adaptive Card JSON. If provided, this overrides the default card template. The JSON must be a valid Adaptive Card with `type: "AdaptiveCard"`. You can design your own card in [Adaptive Cards Designer](https://adaptivecards.microsoft.com/designer).
    - `timezone` - (optional, defaults to `UTC`), a [valid database timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), (ex. Australia/Sydney or America/Denver, etc.)
    - `verbose-logging` - (optional, defaults to `false`), Emits additional logging showing the sent message card and response from the webhook.
 
